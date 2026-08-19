@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+
+<html class="dark scroll-smooth" lang="th" style=""><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>การผลิตไบโอพลาสติกจากต้นธูปฤๅษี</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "background": "#050505",
+                "tertiary": "#fefffd",
+                "on-secondary-fixed": "#00201b",
+                "on-background": "#e5e2e1",
+                "tertiary-container": "#37fdd8",
+                "surface-bright": "#3a3939",
+                "on-primary-fixed-variant": "#005142",
+                "on-primary-fixed": "#002019",
+                "surface-container-highest": "#353534",
+                "surface-tint": "#00e0bb",
+                "secondary-fixed-dim": "#1bdec4",
+                "outline": "#83948e",
+                "on-secondary-fixed-variant": "#005046",
+                "tertiary-fixed-dim": "#00dfbd",
+                "on-secondary": "#00372f",
+                "on-tertiary-fixed-variant": "#005143",
+                "on-surface": "#e5e2e1",
+                "on-error-container": "#ffdad6",
+                "surface-container-high": "#2a2a2a",
+                "primary": "#ffffff",
+                "inverse-surface": "#e5e2e1",
+                "on-primary-container": "#00725e",
+                "inverse-on-surface": "#313030",
+                "surface-container-lowest": "#0e0e0e",
+                "error-container": "#93000a",
+                "on-tertiary": "#00382e",
+                "surface": "#050505",
+                "on-surface-variant": "#b9cac3",
+                "surface-container": "#201f1f",
+                "on-tertiary-container": "#00715f",
+                "error": "#ffb4ab",
+                "secondary": "#43f3d7",
+                "tertiary-fixed": "#38fdd8",
+                "surface-container-low": "#1c1b1b",
+                "on-secondary-container": "#00574c",
+                "secondary-fixed": "#50fbdf",
+                "primary-fixed": "#00ffd5",
+                "on-primary": "#00382d",
+                "inverse-primary": "#006b58",
+                "surface-variant": "#353534",
+                "surface-dim": "#131313",
+                "outline-variant": "#3a4a45",
+                "on-error": "#690005",
+                "primary-container": "#00ffd5",
+                "secondary-container": "#00d6bb",
+                "on-tertiary-fixed": "#00201a",
+                "primary-fixed-dim": "#00e0bb"
+        },
+        "borderRadius": {
+                "DEFAULT": "1rem",
+                "lg": "2rem",
+                "xl": "3rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "stack-lg": "32px",
+                "section-padding": "120px",
+                "container-max": "1440px",
+                "stack-sm": "8px",
+                "card-padding": "40px",
+                "stack-md": "16px",
+                "gutter": "32px"
+        },
+        "fontFamily": {
+                "headline-lg": [
+                        "Space Grotesk"
+                ],
+                "label-caps": [
+                        "JetBrains Mono"
+                ],
+                "display-lg": [
+                        "Space Grotesk"
+                ],
+                "headline-lg-mobile": [
+                        "Space Grotesk"
+                ],
+                "body-lg": [
+                        "Inter"
+                ],
+                "headline-md": [
+                        "Space Grotesk"
+                ],
+                "body-md": [
+                        "Inter"
+                ]
+        },
+        "fontSize": {
+                "headline-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "56px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "label-caps": [
+                        "12px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.1em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "display-lg": [
+                        "72px",
+                        {
+                                "lineHeight": "80px",
+                                "letterSpacing": "-0.04em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "32px",
+                        {
+                                "lineHeight": "40px",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "32px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-md": [
+                        "32px",
+                        {
+                                "lineHeight": "40px",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "400"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        body {
+            background-color: #050505;
+            color: #e5e2e1;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-panel:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0 30px rgba(0, 255, 213, 0.15);
+            border-color: rgba(0, 255, 213, 0.3);
+        }
+        .text-glow {
+            text-shadow: 0 0 20px rgba(0, 255, 213, 0.4);
+        }
+        
+        /* Persistent Background Animations */
+        #bg-canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        #threejs-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        #shader-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero-enter {
+            animation: heroFadeInScale 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        @keyframes heroFadeInScale {
+            0% { opacity: 0; transform: scale(0.95) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- Persistent Animated Background -->
+<div id="bg-canvas-container">
+<canvas height="1024" id="shader-canvas" width="1280"></canvas>
+<div id="threejs-container"></div>
+</div>
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto bg-white/5 backdrop-blur-2xl border-b border-white/10 shadow-[0_0_20px_rgba(0,255,213,0.1)] transition-all duration-300">
+<div class="flex items-center gap-4"><img alt="Science Power 10 Logo" class="h-12 w-auto object-contain filter drop-shadow-[0_0_8px_rgba(0,255,213,0.4)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjSod0mfuEkAzqJnbArfHRnsF3okxONtUSRwPCSTHmuIAG6vp2jpM06nYya94Itq7ITtLmIyuFYJtEShoH77X-4iesIeoxQVGVxyVYLZDidQaNZO-9JVTUhg5L4RBOysXNLM9t8aSBcJCVzWeGn5zJU5gPNjqu248w5Z-nDMtS44QJo8aoCn7JBesZB1IQALgNQ_xxwz18PnmHI6op9joT91as68dHUxC7S712wtcvENZrs929BSwCFkdarTpHa4Xj3w"/><img alt="DSR Logo" class="h-12 w-auto object-contain filter drop-shadow-[0_0_8px_rgba(0,255,213,0.4)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdz78_1PC9zBjcJVpuFgJnLj_6OrjR1XT4mCYzCDWHbey1xsa5fqRYUlx596m1OwP1xLTWQUum6Cede78hhMzqmtUYhwkOSPtzFfpmdOulYiHdsz_qS8ZriFarbyAg8Map998yhRDyIB6qfEhj3JlVVbigCtl276-dKXqDGeWTjQCa1CyxJEvR9ScQaGLA63HZ5uK3EWjy49W0z6PKKxRc4J8tu4mHXz7bxWh0K6eGz5iNUQ5zXKcGtvSzOStyCgIjzg"/><span class="font-headline-md text-primary text-glow">Cattail innovation</span></div>
+<div class="hidden md:flex gap-stack-lg items-center">
+</div>
+<button class="md:hidden text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</nav>
+<main class="relative z-10 max-w-container-max mx-auto px-gutter pt-32 pb-section-padding">
+<!-- 1. Cover -->
+<section class="min-h-[80vh] flex flex-col justify-center items-center text-center space-y-stack-lg hero-enter mb-[20vh]" id="cover">
+<div class="glass-panel floating p-card-padding rounded-xl inline-block mb-8">
+<div class="flex items-center justify-center gap-8 mb-8"><img alt="Science Power 10 Logo" class="w-32 h-32 object-contain floating drop-shadow-[0_0_15px_rgba(0,255,213,0.3)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvP8egz-L-feIDCLICCLOc3nGV4pWMSxhhB25hg_MdS5O7tMuMWuL7zVAb1ifPM_gZ0GWuFLs6Oec0yUi-L2uSc-oG-uQIrMPm0v8fcKyvccXYWbSvgiH1VnPoY5s4AeZgf0Ceh8eF1Ji3-bVT8mVhC5AGfwpOVHF9JJBOBXLAurdnpWPt98X6ot9ShS6sSQpGI8_EvHQnoO7raT0gKweKTtkvkeLUiuSK3L_Yb9MfRhCTNbwloQtzmzz9C9aIcyFXoA"/><img alt="DSR Logo" class="w-32 h-32 object-contain floating drop-shadow-[0_0_15px_rgba(0,255,213,0.3)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZPNMnxSxUddLLvYeOAMdhen7N8b0tsyPFbnVY0Tmvi9L0VJgc4Hw_NOMKpv_1utVVTsmBvjYdhycvuwyHGoi9Rmfxdt-W8xpeoumJWJTtk4MvG64YYv6pv0oy8Kz0uTIwoZaJLTFT7SwxYZzx8qKPBKJQzitT2jJ7TmnrLaK7opdJFVPYgHGk33LKdsU3CDaX_ArDhioDCj2kDskxy74hDrnfDKCB6_Zo52OSdnctZDEWqyBWZBZ2I_3UkYcwj3ErRQ" style="animation-delay: 0.2s;"/></div>
+<h1 class="font-display-lg text-display-lg text-primary text-glow mb-4 tracking-tight">โครงงานวิทยาศาสตร์</h1>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-8 max-w-4xl mx-auto leading-relaxed">
+                    เรื่อง การผลิตไบโอพลาสติกจากเส้นใยเซลลูโลสในดอกของต้นธูปฤๅษี<br/>
+                    โดยเปรียบเทียบวิธีการอบแห้งและตากแห้ง เพื่อช่วยลดการแพร่พันธุ์<br/>
+                    ของต้นธูปฤๅษี
+                </h2>
+<div class="grid grid-cols-2 gap-4 max-w-md mx-auto text-left border-t border-white/10 pt-8 mt-8">
+<div class="text-on-surface-variant font-label-caps text-label-caps">จัดทำโดย</div>
+<div class="font-body-md text-body-md text-on-surface space-y-2">
+<div class="">นายณัฐธวัช คำชัย</div>
+<div class="">นายกฤตบุญ สุโพธานนท์</div>
+<div class="">นายวุฒิศักดิ์ เลไธสง</div>
+</div>
+</div>
+</div>
+<div class="text-center text-on-surface-variant font-body-sm space-y-2 glass-panel p-6 rounded-lg w-full max-w-3xl floating" style="animation-delay: 0.5s;">
+<p class="">รายงานนี้เป็นส่วนหนึ่งของวิชา I30201การศึกษาค้นคว้าและสร้างองค์ความรู้ (IS)</p>
+<p class="">ตามหลักสูตรของห้องเรียน วิทยาศาสตร์ – คณิตศาสตร์ (วิทยาศาสตร์พลังสิบ)</p>
+<p class="">โรงเรียนเทพศิรินทร์ร่มเกล้า</p>
+<p class="">ภาคเรียนที่ 2 ชั้นมัธยมศึกษาปีที่ 4 ปีการศึกษา 2568</p>
+</div>
+</section>
+<!-- 2. Chapter 1: Introduction -->
+<section class="scroll-mt-32 reveal mb-[20vh] active" id="intro">
+<div class="glass-panel rounded-xl p-card-padding">
+<div class="flex items-center gap-4 mb-8 border-b border-white/10 pb-4">
+<span class="material-symbols-outlined text-primary text-4xl text-glow">article</span>
+<h2 class="font-headline-lg text-headline-lg text-primary text-glow">บทที่ 1 บทนำ</h2>
+</div>
+<h3 class="font-headline-md text-headline-md text-secondary-fixed mb-6">1.1 ที่มาและความสำคัญ</h3>
+<div class="font-body-lg text-body-lg text-on-surface-variant space-y-6 leading-relaxed columns-1 md:columns-2 gap-8">
+<p class="">
+                        ปัจจุบันปัญหาขยะพลาสติกจากปิโตรเลียมส่งผลกระทบต่อสิ่งแวดล้อมอย่างต่อเนื่อง เนื่องจากพลาสติกส่วนใหญ่ใช้เวลาย่อยสลายนาน ทำให้เกิดการสะสมของขยะในแหล่งน้ำและบนบก รวมทั้งก่อให้เกิดการปล่อยก๊าซเรือนกระจกจากกระบวนการผลิต จึงมีการพัฒนาพลาสติกชีวภาพ (Bioplastic) ที่ผลิตจากวัสดุชีวภาพและสามารถย่อยสลายได้ทางชีวภาพ เพื่อเป็นทางเลือกในการลดผลกระทบต่อสิ่งแวดล้อม (Nigam et al., 2022) 
+                    </p>
+<p class="">
+                        เซลลูโลสเป็นพอลิเมอร์ธรรมชาติที่พบมากที่สุดในพืช มีสมบัติแข็งแรง ย่อยสลายได้ และสามารถนำมาใช้เป็นวัตถุดิบในการผลิตพลาสติกชีวภาพได้ (Khan et al., 2022) ดอกธูปฤๅษี (Typha spp.) เป็นวัสดุชีวมวลที่มีเส้นใยเซลลูโลสจำนวนมาก และมีศักยภาพในการนำมาใช้เป็นวัสดุชีวภาพทดแทนพลาสติกจากปิโตรเลียม 
+                    </p>
+<p class="">
+                        อีกทั้งการนำดอกธูปฤๅษีมาใช้ก่อนการกระจายเมล็ดช่วยเพิ่มมูลค่าให้กับชีวมวลและลดการแพร่กระจายของพืชชนิดนี้ได้ (Chaichana et al., 2023) อย่างไรก็ตาม ขั้นตอนการเตรียมวัตถุดิบ โดยเฉพาะวิธีการทำแห้ง มีผลต่อโครงสร้างของเส้นใยเซลลูโลสและสมบัติของวัสดุชีวภาพที่ผลิตได้ 
+                    </p>
+<p class="">
+                        แต่ยังมีข้อมูลเปรียบเทียบผลของการอบแห้งและการตากแห้งสำหรับดอกธูปฤๅษีค่อนข้างจำกัด (Dahiya et al., 2023) ดังนั้นโครงงานนี้จึงศึกษาการผลิตพลาสติกชีวภาพจากเส้นใยเซลลูโลสในดอกธูปฤๅษี โดยเปรียบเทียบวิธีการอบแห้งและการตากแห้ง เพื่อหาวิธีการเตรียมวัตถุดิบที่เหมาะสม ซึ่งอาจเป็นข้อมูลพื้นฐานในการพัฒนาพลาสติกชีวภาพจากวัสดุธรรมชาติ และส่งเสริมการใช้ประโยชน์จากชีวมวลให้เกิดมูลค่าเพิ่มควบคู่กับการอนุรักษ์สิ่งแวดล้อม
+                    </p>
+</div>
+</div>
+</section>
+<!-- 3. Chapter 2: Literature Review -->
+<section class="scroll-mt-32 reveal mb-[20vh] active" id="objectives">
+<div class="glass-panel rounded-xl p-card-padding">
+<div class="flex items-center gap-4 mb-8 border-b border-white/10 pb-4">
+<span class="material-symbols-outlined text-primary text-4xl text-glow">menu_book</span>
+<h2 class="font-headline-lg text-headline-lg text-primary text-glow">บทที่ 2 เอกสารที่เกี่ยวข้อง</h2>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-12">
+                    ในการศึกษาเรื่อง การผลิตไบโอพลาสติกจากเส้นใยเซลลูโลสในดอกธูปฤๅษี โดยเปรียบเทียบวิธีการอบแห้งและการตากแห้ง เพื่อช่วยลดการแพร่พันธุ์ของธูปฤๅษี ผู้จัดทำได้ศึกษาค้นคว้าเอกสารและงานวิจัยที่เกี่ยวข้อง เพื่อนำมาใช้เป็นข้อมูลพื้นฐานและแนวทางในการดำเนินโครงงาน โดยมีรายละเอียดดังต่อไปนี้
+                </p>
+<div class="grid md:grid-cols-2 gap-8">
+<!-- 2.1 -->
+<div class="glass-panel p-8 rounded-lg transition-colors">
+<h3 class="font-headline-md text-headline-md text-secondary-fixed mb-4">2.1 ธูปฤๅษี</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                            ชื่อสามัญ: Cattail, Bulrush ชื่อวิทยาศาสตร์ : <i>Typha angustifolia L.</i> ธูปฤๅษี เป็นพืชน้ำที่พบได้ทั่วไปตามหนอง บึง คลอง และพื้นที่ชุ่มน้ำ สามารถเจริญเติบโตและแพร่พันธุ์ได้อย่างรวดเร็วโดยเฉพาะการกระจายของเมล็ดจากส่วนดอกผ่านลม ซึ่งอาจทำให้เกิดการแพร่กระจายอย่างต่อเนื่อง และส่งผลต่อความสมดุลของระบบนิเวศในแหล่งน้ำ
+                        </p>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed mt-4">
+                            อย่างไรก็ตามดอกธูปฤๅษีเป็นแหล่งของเส้นใยเซลลูโลสที่สามารถนำมาใช้เป็นวัตถุดิบในการผลิตวัสดุชีวภาพ เช่น ไบโอพลาสติก เนื่องจากเซลลูโลสมีคุณสมบัติแข็งแรง สามารถย่อยสลายได้ทางชีวภาพ และเป็นทรัพยากรหมุนเวียน การนำดอกธูปฤๅษีมาใช้ประโยชน์จึงนอกจากจะช่วยเพิ่มมูลค่าให้กับชีวมวลแล้ว ยังเป็นอีกแนวทางหนึ่งในการช่วยลดการแพร่พันธุ์ของธูปฤๅษีในแหล่งน้ำ (Kawaguchi et al., 2022)
+                        </p>
+</div>
+<!-- 2.2 -->
+<div class="glass-panel p-8 rounded-lg transition-colors">
+<h3 class="font-headline-md text-headline-md text-secondary-fixed mb-4">2.2 เซลลูโลส</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                            เป็นพอลิเมอร์ที่พบได้ตามธรรมชาติ และเป็นองค์ประกอบสำคัญของผนังเซลล์พืช มีคุณสมบัติเด่นในด้านความแข็งแรง ทนทาน และสามารถย่อยสลายได้ทางชีวภาพ จึงเป็นวัสดุที่ได้รับความสนใจอย่างต่อเนื่องในการนำมาพัฒนาเป็นวัสดุชีวภาพและไบโอพลาสติก เนื่องจากเป็นทรัพยากรที่สามารถหมุนเวียนและนำกลับมาใช้ประโยชน์ได้ ช่วยลดการพึ่งพาวัสดุที่ผลิตจากปิโตรเลียม 
+                        </p>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed mt-4">
+                            อีกทั้งยังสามารถปรับปรุงคุณสมบัติของวัสดุให้เหมาะสมกับการใช้งานในด้านต่าง ๆ ได้อีกด้วย (Tanpichai et al., 2022)
+                        </p>
+</div>
+<div class="glass-panel p-8 rounded-lg transition-colors">
+<h3 class="font-headline-md text-headline-md text-secondary-fixed mb-4">2.3 ไบโอพลาสติก</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                            ไบโอพลาสติกเป็นวัสดุที่ผลิตจากทรัพยากรชีวภาพหรือวัตถุดิบจากธรรมชาติ เช่น แป้ง เซลลูโลส และพอลิเมอร์ชีวภาพชนิดอื่น ๆ ซึ่งสามารถทดแทนการใช้พลาสติกจากปิโตรเลียมได้ ไบโอพลาสติกส่วนใหญ่สามารถย่อยสลายได้ทางชีวภาพ จึงช่วยลดการสะสมของขยะพลาสติก และลดผลกระทบต่อสิ่งแวดล้อม อีกทั้งยังเป็นแนวทางที่สอดคล้องกับการใช้ทรัพยากรอย่างคุ้มค่า และการพัฒนาอย่างยั่งยืน (Surendren et al., 2022)
+                        </p>
+</div>
+<div class="glass-panel p-8 rounded-lg transition-colors">
+<h3 class="font-headline-md text-headline-md text-secondary-fixed mb-4">2.4 การทำให้แห้งของวัสดุชีวภาพ</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                            การทำให้แห้งเป็นขั้นตอนสำคัญในการเตรียมวัตถุดิบชีวภาพก่อนนำไปผลิตวัสดุ เนื่องจากช่วยลดความชื้นในวัตถุดิบ ซึ่งมีผลต่อคุณภาพของเส้นใยเซลลูโลส และสมบัติของผลิตภัณฑ์ที่ได้ วิธีการทำให้แห้งที่แตกต่างกันอาจส่งผลต่อโครงสร้าง และคุณสมบัติของเส้นใย จึงควรเลือกวิธีการที่เหมาะสมเพื่อให้ได้วัสดุชีวภาพที่มีคุณภาพ และมีสมบัติตรงตามความต้องการ (El-Gendi et al., 2022)
+                        </p>
+</div>
+<div class="glass-panel p-8 rounded-lg transition-colors md:col-span-2">
+<h3 class="font-headline-md text-headline-md text-secondary-fixed mb-4">2.5 สมบัติของไบโอพลาสติก</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                            สมบัติของไบโอพลาสติกเป็นปัจจัยสำคัญที่ใช้ประเมินคุณภาพ และความเหมาะสม ในการนำไปใช้งาน โดยสมบัติที่นิยมศึกษา ได้แก่ ลักษณะทางกายภาพ ความแข็งแรงเชิงกล และความสามารถในการย่อยสลายทางชีวภาพ ซึ่งเป็นคุณสมบัติที่สะท้อนถึงประสิทธิภาพของวัสดุ และศักยภาพในการใช้ทดแทนพลาสติกจากปิโตรเลียมได้อย่างเหมาะสม (Nanda et al., 2022)
+                        </p>
+</div></div>
+</div>
+</section>
+<!-- 4. Chapter 3: Methodology -->
+<section class="scroll-mt-32 reveal mb-[20vh] active" id="methodology">
+<div class="glass-panel rounded-xl p-card-padding">
+<div class="flex items-center gap-4 mb-8 border-b border-white/10 pb-4">
+<span class="material-symbols-outlined text-primary text-4xl text-glow">science</span>
+<h2 class="font-headline-lg text-headline-lg text-primary text-glow">บทที่ 3 อุปกรณ์และวิธีดำเนินงาน</h2>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-12">
+                    การศึกษาเรื่อง การผลิตไบโอพลาสติกจากเส้นใยเซลลูโลสในดอกธูปฤๅษี โดยเปรียบเทียบวิธีการอบแห้งและการตากแห้ง เพื่อช่วยลดการแพร่พันธุ์ของธูปฤๅษี เป็นการศึกษาเชิงทดลอง โดยดำเนินการเปรียบเทียบผลของวิธีการทำให้แห้งต่อสมบัติของไบโอพลาสติกที่ผลิตจากเส้นใยเซลลูโลสในดอกธูปฤๅษี ทั้งด้านลักษณะทางกายภาพ ความทนแรงดึง และความสามารถในการย่อยสลาย โดยมีรายละเอียดการดำเนินงาน ดังต่อไปนี้
+                </p>
+<div class="space-y-12">
+<!-- 3.1 Materials and Equipment -->
+<div class="glass-panel p-8 rounded-lg border border-primary/20">
+<h3 class="font-headline-md text-headline-md text-primary mb-6 text-glow">3.1 วัสดุและอุปกรณ์</h3>
+<div class="grid md:grid-cols-2 gap-12">
+<div>
+<h4 class="font-label-caps text-label-caps text-tertiary-fixed mb-4">3.1.1 วัสดุ</h4>
+<ul class="list-disc list-inside font-body-md text-body-md text-on-surface space-y-2">
+<li class="">ดอกของต้นธูปฤๅษี</li>
+<li class="">น้ำกลั่น</li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps text-tertiary-fixed mb-4">3.1.2 อุปกรณ์</h4>
+<ul class="grid grid-cols-1 gap-2 list-disc list-inside font-body-md text-body-md text-on-surface">
+<li class="">เครื่องชั่งในห้องแลปปฏิบัติการ (Semi-micro balance)</li>
+<li class="">เครื่องชั่งสปริงชนิดแขวน</li>
+<li class="">เครื่องปั่นหรือบด</li>
+<li class="">เครื่องอบแห้งหรือเตาอบ</li>
+<li class="">จานเพาะเชื้อ แบบแก้ว</li>
+<li class="">เตาให้ความร้อน (Hotplate EGO 1500W)</li>
+<li class="">ถาดสำหรับตากแห้งด้วยแสงแดด</li>
+<li class="">แท่งคนสาร</li>
+<li class="">ปรอทเทอร์โมมิเตอร์แก้ว</li>
+<li class="">ไม้บรรทัดหรือเวอร์เนียร์คาลิปเปอร์</li>
+<li class="">แม่พิมพ์ขึ้นรูปแผ่นไบโอพลาสติก</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- 3.2 Chemicals -->
+<div class="glass-panel p-8 rounded-lg border border-primary/20">
+<h3 class="font-headline-md text-headline-md text-primary mb-6 text-glow">3.2 สารเคมี</h3>
+<ul class="grid grid-cols-1 md:grid-cols-2 gap-4 list-disc list-inside font-body-md text-body-md text-on-surface">
+<li class="">เอทิลแอลกอฮอล์ (Ethyl alcohol)</li>
+<li class="">โซเดียมไฮดรอกไซด์ (Sodium hydroxide)</li>
+<li class="">ไฮโดรเจนเปอร์ออกไซด์ (Hydrogen peroxide)</li>
+<li class="">กระดาษยูนิเวอร์ซัลอินดิเคเตอร์ (Universal indicator paper)</li>
+</ul>
+</div>
+<!-- 3.3 Experimental Procedures -->
+<div class="glass-panel p-8 rounded-lg border border-primary/20"><h3 class="font-headline-md text-headline-md text-primary mb-6 text-glow">3.3 ขั้นตอนการดำเนินการทดลอง</h3><div class="space-y-8"><div class="space-y-4"><h4 class="font-label-caps text-label-caps text-tertiary-fixed">3.3.1 การเตรียมวัตถุดิบ</h4><ol class="list-decimal list-inside font-body-md text-body-md text-on-surface space-y-2"><li class="">นำดอกธูปฤาษีมาล้างทำความสะอาดด้วยน้ำสะอาด เพื่อกำจัดฝุ่นละอองและสิ่งสกปรกที่ติดอยู่บนผิว</li><li class="">แช่ดอกธูปฤาษีในสารละลายเอทิลแอลกอฮอล์ (Ethyl alcohol) ความเข้มข้น 70% เป็นเวลา 5 นาที เพื่อฆ่าเชื้อจุลินทรีย์และลดการปนเปื้อนของเชื้อรา</li><li class="">ล้างด้วยน้ำกลั่น 2–3 ครั้ง เพื่อล้างสารตกค้างออกจากตัวอย่าง</li><li class="">แบ่งตัวอย่างออกเป็น 2 กลุ่ม ตามวิธีการทำให้แห้ง ดังนี้</li></ol><ul class="list-disc list-inside ml-6 font-body-md text-body-md text-on-surface-variant space-y-1"><li class="">วิธีที่ 1 การอบแห้ง: นำตัวอย่างไปอบในตู้อบลมร้อนที่อุณหภูมิ 80 °C เป็นเวลา 120 นาที หรือจนตัวอย่างแห้งสนิท</li><li class="">วิธีที่ 2 การตากแห้งด้วยแสงแดด: นำตัวอย่างไปตากกลางแจ้งให้ได้รับแสงแดดเป็นเวลา 2 วัน หรือจนตัวอย่างแห้งสนิท</li></ul></div><div class="space-y-4"><h4 class="font-label-caps text-label-caps text-tertiary-fixed">3.3.2 การกำจัดลิกนินและเฮมิเซลลูโลส</h4><ol class="list-decimal list-inside font-body-md text-body-md text-on-surface space-y-2"><li class="">เตรียมสารละลายโซเดียมไฮดรอกไซด์ (NaOH) ความเข้มข้น 5% (w/v)</li><li class="">นำตัวอย่างที่ผ่านการทำให้แห้งแล้วแช่ในสารละลาย NaOH</li><li class="">ให้ความร้อนที่อุณหภูมิ 80 °C เป็นเวลา 4 ชั่วโมง พร้อมคนสารละลายเป็นระยะ</li><li class="">กรองแยกกากเส้นใยออกจากสารละลาย แล้วล้างด้วยน้ำกลั่นจนมีค่า pH เป็นกลาง</li></ol></div><div class="space-y-4"><h4 class="font-label-caps text-label-caps text-tertiary-fixed">3.3.3 การฟอกสีเส้นใยเซลลูโลส</h4><ol class="list-decimal list-inside font-body-md text-body-md text-on-surface space-y-2"><li class="">เตรียมสารละลายไฮโดรเจนเปอร์ออกไซด์ (H₂O₂) ความเข้มข้น 12%</li><li class="">นำเส้นใยที่ผ่านการกำจัดลิกนินแล้วแช่ในสารละลาย H₂O₂</li><li class="">ให้ความร้อนที่อุณหภูมิ 80 °C เป็นเวลา 3 ชั่วโมง พร้อมคนสารละลายเป็นระยะ</li><li class="">กรองแยกเส้นใยออกจากสารละลาย แล้วล้างด้วยน้ำกลั่นจนมีค่า pH เป็นกลาง</li></ol></div><div class="space-y-4"><h4 class="font-label-caps text-label-caps text-tertiary-fixed">3.3.4 การเตรียมเส้นใยเซลลูโลส</h4><ol class="list-decimal list-inside font-body-md text-body-md text-on-surface space-y-2"><li class="">นำเส้นใยเซลลูโลสที่ผ่านการฟอกสีแล้วปั่นด้วยเครื่องปั่น โดยเติมน้ำกลั่นในปริมาณที่เหมาะสม เพื่อให้เส้นใยมีความละเอียดสม่ำเสมอ</li><li class="">กรองแยกเส้นใยออกจากน้ำ และตรวจสอบให้มีค่า pH เป็นกลาง</li><li class="">นำเส้นใยที่ได้พักไว้ในบีกเกอร์เพื่อเตรียมขึ้นรูปเป็นแผ่นไบโอพลาสติก</li></ol></div><div class="space-y-4"><h4 class="font-label-caps text-label-caps text-tertiary-fixed">3.3.5 การขึ้นรูปแผ่นไบโอพลาสติก</h4><ol class="list-decimal list-inside font-body-md text-body-md text-on-surface space-y-2"><li class="">เทสารละลายเส้นใยเซลลูโลสที่เตรียมไว้ลงในแม่พิมพ์ให้มีความหนาสม่ำเสมอ</li><li class="">วางแม่พิมพ์ไว้ที่อุณหภูมิห้องประมาณ 2 วัน หรือจนแผ่นไบโอพลาสติกแห้งสนิท</li><li class="">แกะแผ่นไบโอพลาสติกออกจากแม่พิมพ์ เพื่อนำไปศึกษาสมบัติทางกายภาพ ความทนแรงดึง และความสามารถในการย่อยสลายต่อไป</li></ol></div></div></div>
+<!-- 3.4 Testing -->
+<div class="glass-panel p-8 rounded-lg border border-primary/20"><h3 class="font-headline-md text-headline-md text-primary mb-6 text-glow">3.4 การทดสอบคุณสมบัติของไบโอพลาสติก</h3><div class="space-y-8"><div class="space-y-4"><h4 class="font-label-caps text-label-caps text-tertiary-fixed">1) การศึกษาลักษณะทางกายภาพของไบโอพลาสติก</h4><ol class="list-decimal list-inside font-body-md text-body-md text-on-surface space-y-2"><li class="">นำแผ่นไบโอพลาสติกที่ผลิตได้จากวิธีการอบแห้ง และการตากแห้งด้วยแสงแดดมาเปรียบเทียบ</li><li class="">สังเกต และบันทึกลักษณะทางกายภาพ ได้แก่ สี ความเรียบของผิว ความหนา ความยืดหยุ่น และความสมบูรณ์ของแผ่นไบโอพลาสติก</li><li class="">เปรียบเทียบความแตกต่างของลักษณะทางกายภาพระหว่างทั้งสองวิธีการทำให้แห้ง</li></ol></div><div class="space-y-4"><h4 class="font-label-caps text-label-caps text-tertiary-fixed">2) การทดสอบความทนแรงดึงของไบโอพลาสติก</h4><ol class="list-decimal list-inside font-body-md text-body-md text-on-surface space-y-2"><li class="">ตัดแผ่นไบโอพลาสติกให้มีขนาดเท่ากันทุกตัวอย่าง</li><li class="">นำตัวอย่างไปทดสอบด้วยเครื่องวัดแรงดึงด้วยเครื่องชั่งสปริง</li><li class="">บันทึกค่าแรงดึงสูงสุดที่แผ่นไบโอพลาสติกรับได้ก่อนขาด มีหน่วยเป็นนิวตัน (N)</li><li class="">เปรียบเทียบค่าความทนแรงดึงของไบโอพลาสติกที่ได้จากวิธีการอบแห้ง และการตากแห้งด้วยแสงแดด</li></ol></div><div class="space-y-4"><h4 class="font-label-caps text-label-caps text-tertiary-fixed">3) การทดสอบความสามารถในการย่อยสลายในสภาวะดินและน้ำ</h4><ol class="list-decimal list-inside font-body-md text-body-md text-on-surface space-y-2"><li class="">ตัดแผ่นไบโอพลาสติกให้มีขนาด และน้ำหนักเริ่มต้นเท่ากัน</li><li class="">แบ่งตัวอย่างออกเป็น 2 ชุด ได้แก่ ชุดทดสอบการย่อยสลายในดิน และชุดทดสอบการย่อยสลายในน้ำ</li><li class="">นำตัวอย่างไปฝังในดิน และแช่ในน้ำเป็นระยะเวลาที่กำหนด</li><li class="">เมื่อครบกำหนด นำตัวอย่างออกมาทำความสะอาด ผึ่งให้แห้ง และบันทึกการเปลี่ยนแปลงของลักษณะภายนอก รวมทั้งชั่งน้ำหนักเพื่อเปรียบเทียบกับน้ำหนักก่อนการทดสอบ</li><li class="">เปรียบเทียบผลการย่อยสลายของไบโอพลาสติกที่ได้จากวิธีการทำให้แห้งทั้งสองวิธี</li></ol></div></div></div>
+<!-- 3.5 Data Analysis -->
+<div class="glass-panel p-8 rounded-lg border border-primary/20"><h3 class="font-headline-md text-headline-md text-primary mb-6 text-glow">3.5 การเก็บรวบรวมข้อมูลและวิเคราะห์</h3><p class="font-body-md text-body-md text-on-surface-variant">บันทึกผลการทดลองในรูปแบบตาราง แล้วนำข้อมูลที่ได้มาเปรียบเทียบ และวิเคราะห์ด้วยการอธิบายเชิงพรรณนา โดยพิจารณาความแตกต่างของลักษณะทางกายภาพ ความทนแรงดึง และความสามารถในการย่อยสลายของไบโอพลาสติกที่ผลิตจากดอกธูปฤาษี ซึ่งผ่านวิธีการทำให้แห้งที่แตกต่างกัน การอบแห้งและการตากแห้งด้วยแสงแดด ก่อนสรุปผลการศึกษาตามวัตถุประสงค์ของโครงงาน</p></div>
+</div>
+</div>
+</section>
+<!-- 5. Chapter 4: Results -->
+<section class="scroll-mt-32 reveal mb-[20vh] active" id="results"><div class="glass-panel rounded-xl p-card-padding">
+<div class="flex items-center gap-4 mb-8 border-b border-white/10 pb-4">
+<span class="material-symbols-outlined text-primary text-4xl text-glow">bar_chart</span>
+<h2 class="font-headline-lg text-headline-lg text-primary text-glow">บทที่ 4 ผลการทดลอง</h2>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-12 text-center max-w-3xl mx-auto">
+                    หลังจากการทดลองการผลิตไบโอพลาสติกจากส่วนดอกของต้นธูปฤๅษีในกระบวนการอบแห้งและตากแห้งและนำไปตรวจสอบคุณสมบัติของทั้งสองได้ผลการทดลองว่า
+                </p>
+<div class="space-y-12">
+<!-- 4.1 Section -->
+<div>
+<h3 class="font-headline-md text-headline-md text-secondary-fixed mb-6">4.1 ลักษณะของไบโอพลาสติกจากดอกของต้นธูปฤๅษีในรูปแบบอบแห้งและตากแห้ง</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8">
+            เมื่อนำเส้นใยเซลลูโลสผสมกับน้ำกลั่นปริมาณ 1 : 10 ที่ได้มานำมาตากให้แห้งแล้วได้ออกมาเป็นไบโอพลาสติกที่มีลักษณะดังนี้
+        </p>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse glass-panel">
+<thead>
+<tr class="border-b border-white/20 bg-white/5">
+<th class="p-4 font-headline-md text-lg text-primary text-glow">ลักษณะที่สังเกตุได้</th>
+<th class="p-4 font-headline-md text-lg text-primary text-glow">ไบโอพลาสติกดอกในกระบวนการอบแห้ง</th>
+<th class="p-4 font-headline-md text-lg text-primary text-glow">ไบโอพลาสติกดอกในกระบวนการตากแห้ง</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-white/10">
+<td class="p-4 font-body-md text-on-surface">สีของไบโอพลาสติก</td>
+<td class="p-4">
+<div class="w-full max-w-[200px] mx-auto aspect-square rounded-lg overflow-hidden border border-white/10">
+<img alt="สีของไบโอพลาสติกอบแห้ง" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRX9wxh6XUZYnbheue1uOBXcyzuQ0U47BBOtXrd-xEi-YjD6-kgRil9bpDmRuGNZD_cHD_Ksfo-W1SYnYp27AxRJJLGHQ78E16G0Lob3bCoTUqGgDiTtC_O4SIfyRAChDgjfco_YHYkGZw_0ERGvI3F4Prv8QlBL1-hg6ebS36HBYiCQ7Bcgsgaqf88rEfVVsKpVPp3tnsAJsW30IQkXhTkw4CWHoPen8xOs6sw8IlOjfpQp-W3uXmXkOs3xabKBoHkxf1DuzF0MwlTw"/>
+</div>
+</td>
+<td class="p-4">
+<div class="w-full max-w-[200px] mx-auto aspect-square rounded-lg overflow-hidden border border-white/10">
+<img alt="สีของไบโอพลาสติกตากแห้ง" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMkQdqplN6-F2bsIrjNXDxTGZHRDRarKfQqnsWlWFbZJTwoAq3pY3Yy-pra2-IZQAs_HTtwCkL-dOPDDKIckX6jSq_fZ-iF9YtyxIFXTgS5KCvk1mj_JGlhfAZlpslA1bzNe1oKI154AJPEZzAbf8Fww8F-p-EmWsOkUzbH4X3P_tGk_Eh_M8osB0kgIVagNZL-YgSycTLqGaZaSMBBHO9P2J2xF476Yj1qThd_8VClglkGs65EWFfXcdsB4onxLfGdvjGMnSN6SII8g"/>
+</div>
+</td>
+</tr>
+<tr class="border-b border-white/10">
+<td class="p-4 font-body-md text-on-surface">ขนาดของไบโอพลาสติก</td>
+<td class="p-4">
+<div class="w-full max-w-[200px] mx-auto aspect-square rounded-lg overflow-hidden border border-white/10">
+<img alt="ขนาดของไบโอพลาสติกอบแห้ง" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1gCB6ovgdLGxOczRSW3Ouy_nXYMQ2MXzux1nQkq_XelB1MOIRbFHkhSiN8UoXz9OzthEXAaQD1aUzZmNtOcqhm6mOBjWsoIMmS4yfnGvMsnK2In06Cvfv7EWlNmoUJY7Yc_vPL040GKz8AApzlDr7E_1TK00gL34eZRrguMHCy2JfTcCep702GhRjNxGBCI7eyxHW7F4dFUzEW-3QdrkSDyJz6i91GAStAhIJyWuwU2ZH_MUVjOILHHecMvDKhAe-R3Te4aewkeKjzA"/>
+</div>
+</td>
+<td class="p-4">
+<div class="w-full max-w-[200px] mx-auto aspect-square rounded-lg overflow-hidden border border-white/10">
+<img alt="ขนาดของไบโอพลาสติกตากแห้ง" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlELzic4EOjXGtZpKy1tOkBkMFH397UU5neHMd9ZPVnSg6kJ5PFShW5GZ2c79DHdd1Uh3xRrX-8hs6sCZZXBCUJrwAypJq1N9ipLFlrwtRtS8vjAWPFRCp7nrzp26qi8w18-NrjXxvKqDzBS_BIrP8hpdhwEYfb_XYnHVHB8x4hkoOczJnKjDpvelwYidiIj1EfdjQ7hqSL6KtNUvw8ej-5FJeH23iWXMyOrk9xVQX0_I-hE-mAjgRoPVY8h7CCMwqAqqbUazvXvI8Ow"/>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-6">
+            จากตารางพบว่า ไบโอพลาสติกที่ได้จากกระบวนการอบแห้งมีผิวเรียบ ผิวเรียบ และมีความแข็งแรงมากกว่า ขณะที่ไบโอพลาสติกจากกระบวนการตากแห้งมีสีน้ำตาล ผิวไม่เรียบ และมีความแข็งแรงน้อยกว่าในด้านขนาด พบว่าทั้งสองวิธีมีความหนาใกล้เคียงกันประมาณ 0.01 มิลลิเมตร แต่ลักษณะที่ผิว และความสม่ำเสมอแตกต่างกันอย่างชัดเจน ดังนั้นกระบวนการอบแห้งจึงให้ไบโอพลาสติกที่มีคุณภาพดีกว่ากระบวนการตากแห้ง
+        </p>
+</div>
+<!-- 4.2 Section -->
+<div>
+<h3 class="font-headline-md text-headline-md text-secondary-fixed mb-6">4.2 การทดสอบคุณสมบัติผลิตไบโอพลาสติกจากดอกของต้นธูปฤๅษีในรูปแบบอบแห้งและตากแห้ง</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8">
+            เมื่อตรวจสอบคุณสมบัติของไบโอพลาสติกแบบตากแห้งและอบแห้ง โดยใช้วิธีที่ทำให้ไบโอพลาสติกมีลักษณะคล้ายถุงพลาสติกได้ผลลัพธ์ดังนี้
+        </p>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse glass-panel">
+<thead>
+<tr class="border-b border-white/20 bg-white/5">
+<th class="p-4 font-headline-md text-lg text-primary text-glow">กระบวนการการทดสอบคุณสมบัติ</th>
+<th class="p-4 font-headline-md text-lg text-primary text-glow">ไบโอพลาสติกดอกในกระบวนการอบแห้ง</th>
+<th class="p-4 font-headline-md text-lg text-primary text-glow">ไบโอพลาสติกดอกในกระบวนการตากแห้ง</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-white/10">
+<td class="p-4 font-body-md text-on-surface">การทดสอบแรงดึง</td>
+<td class="p-4">
+<div class="w-full max-w-[200px] mx-auto aspect-square rounded-lg overflow-hidden border border-white/10">
+<img alt="การทดสอบแรงดึงอบแห้ง" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1CsyMon5OigRHXimkCtuyfvd74yqHPjEZcaxYJG0RjRdCjO6x_8kOVX6uBJQ4itik5y3QgPI2qMZgFmIu1LJSePoB3ntFTqBDH34Z6rai7rpVsCUMWCA4LtNA1vf15IWXc6D5gVHZ5YEczKSzup5ivtsmbrcn7-hvMgNkDB0xs9WVSophuAFNjl0I1VuRcQnN41V1J4CJk6KRsp6A3QEebw9LEZKmMZAllsIGTpozil1OOqK3BmbXdi-ytrckCfsgV3W7a07iatUjPA"/>
+</div>
+</td>
+<td class="p-4">
+<div class="w-full max-w-[200px] mx-auto aspect-square rounded-lg overflow-hidden border border-white/10">
+<img alt="การทดสอบแรงดึงตากแห้ง" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLp24jHIE8Ua5S8nd3fV7ZbsspxSwDM6KKWbqTBVmFyPraTbzbh4QfL_Qs0LgxouRzBCF-eDpXz1mY2XvA078pNiP6qRI4A67Vkf9-nYSzZKm5AmWT2HbOETY6uLHaZ_bdnyNhBTslDirPOOd4cvf5Yz3bRQIMmABgIqK-1elw1TGenVCJd9EpKd4c6CDtYVJ5Kq8ixcQ27rguiRgBc-Jsi8_aPVtoiEzJGnpi_Rc5lj6g_D9eTzZbKf2vgOsejtF0P_ijQHrFUp9Q6Q"/>
+</div>
+</td>
+</tr>
+<tr class="border-b border-white/10">
+<td class="p-4 font-body-md text-on-surface">การทดสอบการย่อยสลาย</td>
+<td class="p-4">
+<div class="w-full max-w-[200px] mx-auto aspect-square rounded-lg overflow-hidden border border-white/10">
+<img alt="การย่อยสลายอบแห้ง" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzDsspTLWKb6r4dJm3MbZze1KSV1S9wi8KsXEpPS58jEK4x5ImHVeY49kwVnryw0wCq4QLtzOg61NJBe5NCcgfeD_Yu67UpIm-5Ku2EGagOoqO9EMN6qMmE0DamHyeTieIed1pNlLERuFBomAbgDubspVmIN_UwaQp3aemDlF0zU6w2WclmBhLLviGwK60TBIOO2mNX5DuLVfPiolCoBb6m_jwgyOSnmvrfW5Y4FG-jdel72iuTtzdkH6Wff3bFYAk9UTDNyMRngemsQ"/>
+</div>
+</td>
+<td class="p-4">
+<div class="w-full max-w-[200px] mx-auto aspect-square rounded-lg overflow-hidden border border-white/10">
+<img alt="การย่อยสลายตากแห้ง" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDyUIEb7S-eftaMdpCzIDaKCu3Kpq0KnTbOZpEmSo8b_PbpTu0blhUWwGT7a2-lKPNi8lIdS6oKNCIYbsDBasAz0tebbEvWj8niZO5Di-TDu3ZWY2WslmEpWZYh2AWJZo2Oi4mORobZJ_m-1sEWvqucZmd91BCDdWYceDT5tEL8UsxDvh5eeiaRD4tJPvEeRj8jtalyH3fuYlF9mLzxIOI70uCAKXDzxMyZhW5krUh_QeGmyMZyR6kfGr3J0c6tFAKijupsPW0Ok55LA"/>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-6">
+            จากตารางพบว่า ไบโอพลาสติกที่ทำจากดอกธูปฤๅษี โดยใช้กระบวนการอบแห้ง จะมีความแข็งแรงและทนทานมากกว่าไบโอพลาสติกที่ทำจากกระบวนการตากแห้ง โดยไบโอพลาสติกจากกระบวนการอบแห้งสามารถรับแรงดึงได้ถึง 3.8 นิวตัน หรือเท่ากับ 380 กรัม ในขณะที่ไบโอพลาสติกจากกระบวนการตากแห้งสามารถรับแรงดึงได้เพียง 1.3 นิวตัน หรือเท่ากับ 130 กรัม นอกจากนี้ไบโอพลาสติกทั้งสองชนิดสามารถย่อยสลายได้ตามธรรมชาติหลังจากผ่านไป 60 วัน จึงแสดงให้เห็นว่ากระบวนการอบแห้งสามารถผลิตไบโอพลาสติกที่มีความแข็งแรงมากกว่า แต่ยังคงสามารถย่อยสลายได้ตามธรรมชาติ
+        </p>
+</div>
+</div>
+</div></section>
+<!-- 6. Chapter 5: Conclusion -->
+<section class="scroll-mt-32 reveal mb-[20vh] active" id="conclusion">
+<div class="glass-panel rounded-xl p-card-padding"><div class="flex items-center gap-4 mb-8 border-b border-white/10 pb-4"><span class="material-symbols-outlined text-primary text-4xl text-glow">done_all</span><h2 class="font-headline-lg text-headline-lg text-primary text-glow">บทที่ 5 สรุป และอภิปรายผลการทดลอง</h2></div><p class="font-body-lg text-body-lg text-on-surface-variant mb-12">จากการศึกษาการผลิตไบโอพลาสติกจากเส้นใยเซลลูโลสในดอกธูปฤาษี โดยเปรียบเทียบวิธีการอบแห้ง และการตากแห้ง สามารถสรุปผลการทดลอง อภิปรายผล และเสนอแนะแนวทางในการพัฒนาการผลิตไบโอพลาสติกให้มีความเหมาะสม และมีประสิทธิภาพมากยิ่งขึ้นได้ดังต่อไปนี้</p><div class="space-y-12"><div><h3 class="font-headline-md text-headline-md text-secondary-fixed mb-4">5.1 สรุปผลการดำเนินงาน</h3><div class="glass-panel p-6 rounded-lg border-l-4 border-secondary-fixed"><p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">จากการทดลองพบว่า ดอกธูปฤๅษีสามารถนำมาผลิตเป็นไบโอพลาสติกได้ เนื่องจากมีเส้นใยเซลลูโลสที่สามารถยึดเกาะกันได้ แล้วขึ้นรูปเป็นแผ่นได้เมื่อผ่านการบด ผสมน้ำ และทำให้แห้งเมื่อเปรียบเทียบวิธีการทำแห้ง พบว่าวิธีอบแห้งให้ผลที่ดีกว่า ไบโอพลาสติกที่ได้มีความเรียบ สม่ำเสมอ และแข็งแรงมากขึ้น เนื่องจากสามารถควบคุมอุณหภูมิได้ ทำให้น้ำระเหยอย่างสม่ำเสมอดังนั้น วิธีอบแห้งจึงเหมาะที่สุดสำหรับการผลิตไบโอพลาสติกจากดอกธูปฤๅษี</p></div></div><div><h3 class="font-headline-md text-headline-md text-secondary-fixed mb-4">5.2 อภิปรายผลการทดลอง</h3><div class="glass-panel p-6 rounded-lg"><p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">จากผลการทดลองพบว่า ดอกธูปฤๅษีสามารถนำมาผลิตเป็นไบโอพลาสติกได้ เนื่องจากภายใน มีเส้นใยเซลลูโลส ซึ่งเป็นพอลิเมอร์ธรรมชาติที่มีโครงสร้างเป็นสายยาว และมีหมู่ไฮดรอกซิล (-OH) ที่สามารถเกิดแรงยึดเหนี่ยวระหว่างโมเลกุลได้ เมื่อผ่านกระบวนการบด และผสมน้ำ เส้นใยจะกระจายตัว และเมื่อทำให้แห้ง น้ำจะระเหยออก ส่งผลให้เส้นใยเข้ามาใกล้กัน และยึดเกาะกัน จึงสามารถขึ้นรูปเป็นแผ่นฟิล์มได้นอกจากนี้ วิธีการทำแห้งมีผลต่อคุณสมบัติของไบโอพลาสติกอย่างชัดเจน โดยการอบแห้งสามารถควบคุมอุณหภูมิได้อย่างคงที่ ทำให้น้ำระเหยอย่างสม่ำเสมอ ส่งผลให้โครงสร้างของแผ่นไบโอพลาสติกมีความแน่น เรียบ และมีความสม่ำเสมอ ซึ่งสอดคล้องกับผลการทดลองที่พบว่าแผ่นฟิล์มมีผิวเรียบและไม่บิดงอ ในขณะที่การตากแห้งขึ้นอยู่กับสภาพแวดล้อม เช่น แสงแดด ความชื้น และอุณหภูมิ ทำให้การระเหยของน้ำไม่สม่ำเสมอ ส่งผลให้แผ่นไบโอพลาสติก มีลักษณะขรุขระ และมีความหนาไม่เท่ากันสำหรับสีของไบโอพลาสติกที่มีลักษณะเป็นสีเขียว อาจเกิดจากสารสีธรรมชาติในพืช เช่น คลอโรฟิลล์ ที่ยังคงหลงเหลืออยู่ในวัตถุดิบ ซึ่งแสดงให้เห็นว่ากระบวนการเตรียมวัตถุดิบ เช่น การบดและการกรอง อาจยังไม่ละเอียดเพียงพอ หรืออุณหภูมิในการให้ความร้อนยังไม่เหมาะสมต่อการสลายสารสีดังกล่าวดังนั้น ผลการทดลองนี้แสดงให้เห็นว่า เส้นใยเซลลูโลสเป็นปัจจัยสำคัญที่ทำให้สามารถขึ้นรูปเป็นแผ่นไบโอพลาสติกได้ และวิธีการทำแห้งรวมถึงขั้นตอนการเตรียมวัตถุดิบมีผลโดยตรงต่อคุณภาพของผลิตภัณฑ์ ทั้งในด้านโครงสร้าง ความเรียบ ความสม่ำเสมอ และสีของไบโอพลาสติก</p></div></div><div><h3 class="font-headline-md text-headline-md text-secondary-fixed mb-4">5.3 ข้อเสนอแนะ</h3><div class="glass-panel p-6 rounded-lg border border-primary/20"><ol class="list-decimal list-inside font-body-md text-body-md text-on-surface space-y-2"><li class="">ควรบดวัตถุดิบให้ละเอียด และกรองให้ดีมากขึ้น เพื่อลดสิ่งเจือปนและทำให้เนื้อไบโอพลาสติกมีความสม่ำเสมอมากขึ้น</li><li class="">ควรศึกษาผลของอัตราส่วนเส้นใยเซลลูโลส และสารเติมแต่งที่ใช้ในการผลิตไบโอพลาสติก เพื่อปรับปรุงสมบัติด้านความแข็งแรง ความยืดหยุ่น และความทนทานของวัสดุ</li><li class="">ควรพัฒนารูปแบบผลิตภัณฑ์ให้สามารถนำไปใช้ได้จริง เช่น บรรจุภัณฑ์ ถุงเพาะชำ หรือภาชนะใช้ครั้งเดียว</li></ol></div></div></div></div>
+</section>
+<!-- 7. References -->
+<section class="scroll-mt-32 reveal mb-[20vh] active" id="reference">
+<div class="glass-panel rounded-xl p-card-padding relative overflow-hidden">
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex items-center gap-4 mb-8 border-b border-white/10 pb-4 relative z-10">
+<span class="material-symbols-outlined text-primary text-4xl text-glow">format_quote</span>
+<h2 class="font-headline-lg text-headline-lg text-primary text-glow">เอกสารอ้างอิง</h2>
+</div>
+<div class="grid md:grid-cols-2 gap-8 relative z-10"><div class="md:col-span-2 space-y-6 font-body-md text-on-surface-variant leading-relaxed">
+<div class="glass-panel p-6 rounded-lg border border-white/5">
+<p class="mb-4">Chaichana, W., Phomraksa, P., Kaewtatip, K., &amp; Srikulkit, K. (2023). Effect of glycerol concentrations on the characteristics of cellulose films from cattail (Typha angustifolia L.) flowers. <i>Polymers</i>, 15(23), 4535. https://doi.org/10.3390/polym15234535</p>
+<p class="mb-4">Dahiya, D., Ceccherini, S., &amp; Maloney, T. C. (2023). Impact of high consistency enzymatic hydrolysis and defibration drying on cellulose fiber pore characteristics. <i>Cellulose</i>, 30, 7607–7618. https://doi.org/10.1007/s10570-023-05398-z</p>
+<p class="mb-4">Khan, R., Jolly, R., Fatima, T., &amp; Shakir, M. (2022). Extraction processes for deriving cellulose: A comprehensive review on green approaches. <i>Polymers for Advanced Technologies</i>, 33(7), 2069–2090. https://doi.org/10.1002/pat.5678</p>
+<p class="mb-4">Nigam, S., Das, A. K., Matkawala, F., &amp; Patidar, M. K. (2022). An insight overview of bioplastics produced from cellulose extracted from plant material, its applications and degradation. <i>Environmental Sustainability</i>, 5(4), 423–441. https://doi.org/10.1007/s42398-022-00248-3</p>
+<p class="mb-4">Kawaguchi, H., Takada, K., Elkasaby, T., Pangestu, R., Toyoshima, M., Kahar, P., Ogino, C., Kaneko, T., &amp; Kondo, A. (2022). Recent advances in lignocellulosic biomass white biotechnology for bioplastics. <i>Bioresource Technology</i>, 344, 126165. https://doi.org/10.1016/j.biortech.2021.126165</p>
+<p class="mb-4">Tanpichai, S., Boonmahitthisud, A., Soykeabkaew, N., &amp; Ongthip, L. (2022). Review of the recent developments in all-cellulose nanocomposites: Properties and applications. <i>Carbohydrate Polymers</i>, 286, 119192. https://doi.org/10.1016/j.carbpol.2022.119192</p>
+<p class="mb-4">Surendren, A., Mohanty, A. K., Liu, Q., &amp; Misra, M. (2022). A review of biodegradable thermoplastic starches, their blends and composites: Recent developments and opportunities for single-use plastic packaging alternatives. <i>Green Chemistry</i>, 24(22), 8606–8636. https://doi.org/10.1039/D2GC02169B</p>
+<p class="mb-4">El-Gendi, H., Taha, T. H., Ray, J. B., Saleh, A. K., Zineldeen, D. H., El-Zawawy, W. K., &amp; Abdel-Fattah, Y. R. (2022). Recent advances in bacterial cellulose: A low-cost effective production media, optimization strategies and applications. <i>Cellulose</i>, 29(14), 7495–7533. https://doi.org/10.1007/s10570-022-04697-1</p>
+<p class="">Nanda, S., Patra, B. R., Patel, R., Bakos, J., &amp; Dalai, A. K. (2022). Innovations in applications and prospects of bioplastics and biopolymers: A review. <i>Environmental Chemistry Letters</i>, 20(1), 379–395. https://doi.org/10.1007/s10311-021-01334-4</p>
+</div>
+</div></div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-section-padding px-gutter flex flex-col md:flex-row justify-between gap-stack-lg max-w-container-max mx-auto bg-surface border-t border-white/5 relative z-10 glass-panel mt-12 rounded-t-3xl">
+<div class="flex items-center gap-4 mb-4 md:mb-0"><img alt="Science Power 10 Logo" class="h-10 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwtghAoySnYcdMupX_VajO81je3-nNdni48HhVbl6Z3psI75UqOcG1VPo2b5Vrm3WzRaN9BOsmMqE4955Ug9o2sR8nrQ6uAkBAL8HAufIQuI1MSIHeggBFyDbEssER8ksgeX6vcbSuhxejoqKSwN9q-X3G0ZZ7c12047SZOFvpByxT9Iytps0d2JBV6nM2By2R9E9fG5q1sKpbxkZQ7uI_cjFPq1bOpw9AwBy9ThU1-vUhBY5ar3bV-J_XBSfkGkLVQw"/><img alt="DSR Logo" class="h-10 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYoRakSHJmq4zSldBu-h_WxdjLjy5OT6C2Ig_X-2-IzVRkfm0nUiQL_Vg3I4HLkB9NlBO4SNdKMHTBVDcPgyfU6BJN6cnAVtOhkPbzJSPEDKo9y0Zbyn1hDIAWNpQsR_VAj0oeh8BXtPOIaDFp8FmUOfLBtT1dZm_7TV8Z_E_ic3xou_Y2dtD9Ck0o4NMir1UegbkREY3DhMkk33b7vQGSIMZEb63lq_58EJm_VHLGGYx2ghXNbjhrDZuGILs_62Vp8g"/></div>
+<div class="flex flex-col md:flex-row gap-8 items-start md:items-center"><div class="flex flex-col md:flex-row gap-12 items-start md:items-center w-full">
+<div class="space-y-2">
+<p class="font-label-caps text-label-caps text-secondary-fixed opacity-80">โดย</p>
+<div class="flex flex-wrap gap-x-8 gap-y-2">
+<p class="font-body-md text-body-md text-on-surface-variant">นายณัฐธวัช คำชัย</p>
+<p class="font-body-md text-body-md text-on-surface-variant">นายกฤตบุญ สุโพธานนท์</p>
+<p class="font-body-md text-body-md text-on-surface-variant">นายวุฒิศักดิ์ เลไธสง</p>
+</div>
+</div>
+<div class="space-y-2">
+<p class="font-label-caps text-label-caps text-secondary-fixed opacity-80">อาจารย์ที่ปรึกษา</p>
+<p class="font-body-md text-body-md text-on-surface-variant">ครูทยากร สุขขวัญ</p>
+</div>
+</div></div>
+</footer>
+<script>
+        // WebGL Shader Background
+        const canvas = document.getElementById('shader-canvas');
+        const gl = canvas.getContext('webgl');
+
+        if (gl) {
+            const vertexShaderSource = `
+                attribute vec4 position;
+                void main() {
+                    gl_Position = position;
+                }
+            `;
+
+            const fragmentShaderSource = `
+                precision highp float;
+                uniform float u_time;
+                uniform vec2 u_resolution;
+                uniform vec2 u_mouse;
+
+                float hash(vec2 p) {
+                    p = fract(p * vec2(123.34, 456.21));
+                    p += dot(p, p + 45.32);
+                    return fract(p.x * p.y);
+                }
+
+                float noise(vec2 p) {
+                    vec2 i = floor(p);
+                    vec2 f = fract(p);
+                    float a = hash(i);
+                    float b = hash(i + vec2(1.0, 0.0));
+                    float c = hash(i + vec2(0.0, 1.0));
+                    float d = hash(i + vec2(1.0, 1.0));
+                    vec2 u = f * f * (3.0 - 2.0 * f);
+                    return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+                }
+
+                void main() {
+                    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+                    vec2 p = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
+                    
+                    // Deep obsidian background
+                    vec3 color = vec3(0.02, 0.02, 0.02);
+                    
+                    // Emerald and Cyan Aurora-like gradients
+                    float n1 = noise(p * 0.5 + u_time * 0.05);
+                    float n2 = noise(p * 0.8 - u_time * 0.03);
+                    
+                    vec3 emerald = vec3(0.06, 0.72, 0.5); // Emerald
+                    vec3 cyan = vec3(0.0, 1.0, 0.83);    // Cyan
+                    
+                    color = mix(color, emerald * 0.15, n1);
+                    color = mix(color, cyan * 0.1, n2);
+                    
+                    // Soft vignette
+                    float vignette = 1.0 - length(p * 0.5);
+                    color *= vignette;
+                    
+                    // Mouse interaction glow
+                    vec2 m = (u_mouse.xy / u_resolution.xy * 2.0 - 1.0);
+                    float dist = length(p - m);
+                    float glow = 0.05 / (dist + 0.5);
+                    color += cyan * glow * 0.2;
+                    
+                    // Subtle scanlines/texture
+                    float scanline = sin(gl_FragCoord.y * 0.5) * 0.02;
+                    color += scanline;
+
+                    gl_FragColor = vec4(color, 1.0);
+                }
+            `;
+
+            function createShader(gl, type, source) {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                    console.error(gl.getShaderInfoLog(shader));
+                    gl.deleteShader(shader);
+                    return null;
+                }
+                return shader;
+            }
+
+            const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+            const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+
+            const program = gl.createProgram();
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+            gl.linkProgram(program);
+
+            const positionAttributeLocation = gl.getAttribLocation(program, "position");
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            const positions = [
+                -1.0, -1.0,
+                 1.0, -1.0,
+                -1.0,  1.0,
+                -1.0,  1.0,
+                 1.0, -1.0,
+                 1.0,  1.0,
+            ];
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+
+            const timeUniformLocation = gl.getUniformLocation(program, "u_time");
+            const resolutionUniformLocation = gl.getUniformLocation(program, "u_resolution");
+            const mouseUniformLocation = gl.getUniformLocation(program, "u_mouse");
+
+            let mouseX = 0;
+            let mouseY = 0;
+
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = window.innerHeight - e.clientY;
+            });
+
+            function resizeCanvasToDisplaySize(canvas) {
+                const displayWidth  = canvas.clientWidth;
+                const displayHeight = canvas.clientHeight;
+                if (canvas.width  !== displayWidth || canvas.height !== displayHeight) {
+                    canvas.width  = displayWidth;
+                    canvas.height = displayHeight;
+                }
+            }
+
+            function render(time) {
+                time *= 0.001;
+                resizeCanvasToDisplaySize(canvas);
+                gl.viewport(0, 0, canvas.width, canvas.height);
+                
+                gl.useProgram(program);
+                gl.enableVertexAttribArray(positionAttributeLocation);
+                gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+                gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+
+                gl.uniform1f(timeUniformLocation, time);
+                gl.uniform2f(resolutionUniformLocation, canvas.width, canvas.height);
+                gl.uniform2f(mouseUniformLocation, mouseX, mouseY);
+
+                gl.drawArrays(gl.TRIANGLES, 0, 6);
+                requestAnimationFrame(render);
+            }
+            requestAnimationFrame(render);
+        }
+
+        // Three.js Molecular Background
+        (function() {
+          const container = document.getElementById('threejs-container');
+          if (!container || !window.THREE) return;
+
+          const width = container.clientWidth || window.innerWidth;
+          const height = container.clientHeight || window.innerHeight;
+          
+          const scene = new THREE.Scene();
+          const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+          const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+          renderer.setSize(width, height);
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+          container.appendChild(renderer.domElement);
+
+          const group = new THREE.Group();
+          scene.add(group);
+
+          // Colors
+          const cyanColor = 0x00FFD5;
+          const emeraldColor = 0x10B981;
+
+          // Materials
+          const atomMat = new THREE.MeshPhongMaterial({ color: cyanColor, emissive: cyanColor, emissiveIntensity: 0.5 });
+          const bondMat = new THREE.MeshPhongMaterial({ color: emeraldColor, transparent: true, opacity: 0.3 });
+          const hBondMat = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.1, dashSize: 0.1, gapSize: 0.1 });
+
+          // Cellulose Chain Function
+          function createCelluloseChain(count, offset) {
+            const chain = new THREE.Group();
+            for(let i = 0; i < count; i++) {
+              // Glucose Monomer (simplified as 3-atom cluster)
+              const monomer = new THREE.Group();
+              
+              const a1 = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), atomMat);
+              const a2 = new THREE.Mesh(new THREE.SphereGeometry(0.08, 12, 12), atomMat);
+              const a3 = new THREE.Mesh(new THREE.SphereGeometry(0.08, 12, 12), atomMat);
+              
+              a2.position.set(0.3, 0.2, 0.1);
+              a3.position.set(-0.2, -0.3, -0.1);
+              
+              monomer.add(a1, a2, a3);
+              monomer.position.set(i * 1.2, Math.sin(i * 0.5) * 0.3, 0);
+              chain.add(monomer);
+              
+              if(i > 0) {
+                const bondGeom = new THREE.CylinderGeometry(0.02, 0.02, 1.2, 8);
+                const bond = new THREE.Mesh(bondGeom, bondMat);
+                bond.rotation.z = Math.PI / 2;
+                bond.position.set((i - 0.5) * 1.2, (Math.sin(i * 0.5) + Math.sin((i-1) * 0.5)) * 0.15, 0);
+                chain.add(bond);
+              }
+            }
+            chain.position.set(offset.x, offset.y, offset.z);
+            chain.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+            return chain;
+          }
+
+          // Create Microfibril Bundle
+          for(let j = 0; j < 8; j++) {
+            const chain = createCelluloseChain(15, {
+              x: (Math.random() - 0.5) * 20,
+              y: (Math.random() - 0.5) * 20,
+              z: (Math.random() - 0.5) * 10
+            });
+            chain.userData = { 
+              rotSpeed: (Math.random() - 0.5) * 0.005,
+              floatSpeed: (Math.random() - 0.5) * 0.01 
+            };
+            group.add(chain);
+          }
+
+          // Floating Particles
+          const partGeom = new THREE.BufferGeometry();
+          const partCount = 1000;
+          const posArray = new Float32Array(partCount * 3);
+          for(let i = 0; i < partCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 30;
+          }
+          partGeom.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+          const partMat = new THREE.PointsMaterial({ size: 0.05, color: cyanColor, transparent: true, opacity: 0.5 });
+          const particles = new THREE.Points(partGeom, partMat);
+          scene.add(particles);
+
+          // Lights
+          scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+          const pLight = new THREE.PointLight(cyanColor, 1, 50);
+          pLight.position.set(10, 10, 10);
+          scene.add(pLight);
+
+          camera.position.z = 15;
+
+          let scrollPos = 0;
+          window.addEventListener('scroll', () => {
+            scrollPos = window.scrollY * 0.001;
+          });
+
+          let mouse = { x: 0, y: 0 };
+          window.addEventListener('mousemove', (e) => {
+            mouse.x = (e.clientX / window.innerWidth - 0.5) * 2;
+            mouse.y = (e.clientY / window.innerHeight - 0.5) * 2;
+          });
+
+          function animate() {
+            requestAnimationFrame(animate);
+            
+            group.rotation.y += 0.001 + scrollPos * 0.1;
+            group.rotation.x += mouse.y * 0.01;
+            group.rotation.z += mouse.x * 0.01;
+            
+            group.children.forEach(c => {
+              c.rotation.y += c.userData.rotSpeed;
+              c.position.y += Math.sin(Date.now() * 0.001 + c.position.x) * 0.005;
+            });
+
+            particles.rotation.y -= 0.0005;
+            
+            renderer.render(scene, camera);
+          }
+          animate();
+
+          window.addEventListener('resize', () => {
+            const w = container.clientWidth || window.innerWidth;
+            const h = container.clientHeight || window.innerHeight;
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h);
+          });
+        })();
+
+        // Scroll Reveal Logic
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Trigger on load
+
+        // Active state logic for navigation
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('text-primary', 'bg-white/10');
+                    link.classList.remove('text-on-surface-variant');
+                } else {
+                    link.classList.remove('text-primary', 'bg-white/10');
+                    link.classList.add('text-on-surface-variant');
+                }
+            });
+        });
+    </script>
+</body></html>
